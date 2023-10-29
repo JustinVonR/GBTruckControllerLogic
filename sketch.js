@@ -1,8 +1,5 @@
 var width = windowWidth;
 var height = width/2;
-var ptoOn = false;
-var roofOpen = false;
-var truckStopped = true;
 
 function setup() {
     
@@ -15,12 +12,5 @@ function draw() {
         height = width/2;
         resizeCanvas(width,height);
     }
-    if (mouseIsPressed) {
-        fill(0);
-        stroke(255);
-    } else {
-        fill(255);
-        stroke(0);
-    }
-    ellipse(mouseX,mouseY,80,80)
+
 }
