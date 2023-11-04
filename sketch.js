@@ -5,6 +5,7 @@ var hydraulicsOn = false;
 var roofOpen = false;
 var truckStopped = false;
 var runHopper = false;
+var cycleCount = 0;
 
 var compactorOn = false;
 var blowerOn = false;
@@ -16,7 +17,7 @@ var firstFrame = true;
 /*Delays between component shutoff in milliseconds*/
 const delayBladeMs = 3000;
 const delayAirMs = 3000;
-const delayCompactor = 10000;
+const delayCompactorMs = 22000;
 const compactorCycleLen = 30000;
 
 
@@ -126,24 +127,32 @@ function drawIndicators() {
 }
 
 async function activateHopper() {
-    print('async function running');
-    while(runHopper) {
-        blowerOn = true;
-        cuttingBladeOn = true;
-        await wait(delayBladeMs);
-    }
-    cuttingBladeOn = false;
-    await wait(delayAirMs);
-    blowerOn = false;
-    await wait(delayCompactor);
-    if (!runHopper) {
-        compactorOn = true;
-        await wait(compactorCycleLen);
-        compactorOn = false;
+    if(runHopper) {
+        cycleCount++;
+        var currentCycle = cycleCount;
+        print('async function running');
+        while(runHopper) {
+            blowerOn = true;
+            cuttingBladeOn = true;
+            await wait(delayBladeMs);
+        }
+        cuttingBladeOn = false;
+        await wait(delayAirMs);
+        blowerOn = false;
+        await wait(delayCompactorMs);
+        if (!runHopper && (currentCycle == cycleCount)) {
+            print('Inner condition running');
+            compactorOn = true;
+            await wait(compactorCycleLen);
+            compactorOn = false;
+        } else {
+            return;
+        }
     }
 }
 
 function wait(msDuration) {
+    print("Wait function running with duration: "+msDuration);
     return new Promise((resolve) => {
         setTimeout(resolve, msDuration);
     })
