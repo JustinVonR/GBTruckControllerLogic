@@ -1,4 +1,4 @@
-# GBTruckControllerLogic
+# Garbage Truck Controller Logic Simulation
 This project was created as a mini code prototype for a college design class. The interface was created using the [p5.js Library](https://p5js.org/) and the site is using [GitHub Pages](https://pages.github.com/).
 
 ### Instructions for Using the Code
